@@ -38,13 +38,13 @@ def demo(cfg):
 	model = loadCheckpoints(model, args.checkpointspath)
 	# generate video according to mode
 	fourcc = cv2.VideoWriter_fourcc(*'XVID')
-	video = cv2.VideoWriter(args.outputpath, fourcc, 30.0, cfg.IMAGE_SIZE)
+	video = cv2.VideoWriter(args.outputpath, fourcc, cfg.FPS, cfg.IMAGE_SIZE)
 	if args.mode == 'random':
 		for i in range(1, cfg.NUM_SAMPLES+1):
 			logger_handle.info('[RANDOM]: Yield %d image...' % i)
 			z = np.random.normal(0, 1, 128).astype(np.float32)
 			z = torch.from_numpy(z).view(1, -1).type(FloatTensor)
-			img_gen = model.decoder(z)[0][0].cpu().data.permute(1, 2, 0).numpy() * 255
+			img_gen = model.decoder(z)[0].cpu().data.permute(1, 2, 0).numpy() * 255
 			img_gen = img_gen.astype('uint8')
 			img_gen = cv2.cvtColor(img_gen, cv2.COLOR_GRAY2RGB)
 			video.write(img_gen)

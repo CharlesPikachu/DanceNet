@@ -26,7 +26,8 @@ class Decoder(nn.Module):
 								   nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1),
 								   nn.ReLU(inplace=True),
 								   nn.Upsample(scale_factor=2, mode='bilinear'),
-								   nn.Conv2d(in_channels=128, out_channels=1, kernel_size=3, stride=1, padding=1))
+								   nn.Conv2d(in_channels=128, out_channels=1, kernel_size=3, stride=1, padding=1),
+								   nn.Sigmoid())
 	def forward(self, x):
 		x = F.relu(self.fc1(x), inplace=True)
 		x = F.relu(self.fc2(x), inplace=True)

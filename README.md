@@ -49,7 +49,10 @@ python demo.py --mode fromtrain --checkpointspath xxx.pth --outputpath xxx.avi
 ```
 
 # Some results
-preparing
+#### fromtrain mode
+![giphy](material/effects/demo_fromtrain.gif)
+#### random mode
+![giphy](material/effects/demo_random.gif)
 
 # More
 #### WeChat Official Accounts
