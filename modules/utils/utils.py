@@ -83,7 +83,7 @@ def loadCheckpoints(model, checkpointspath):
 class ImageFolder(Dataset):
 	def __init__(self, rootdir, image_size, **kwargs):
 		self.image_size = image_size
-		self.imagepaths = [os.path.join(rootdir, filename) for filename in os.listdir(rootdir)]
+		self.imagepaths = [os.path.join(rootdir, str(i)+'.jpg') for i in range(1, len(os.listdir(rootdir))+1)]
 	def __getitem__(self, index):
 		img = cv2.imread(self.imagepaths[index], cv2.IMREAD_GRAYSCALE)
 		img = cv2.resize(img, self.image_size)

@@ -8,6 +8,7 @@ Author:
 '''
 import os
 import cv2
+import argparse
 import numpy as np
 from cfgs import cfg_demo as cfg
 from modules.utils.utils import *
@@ -43,7 +44,7 @@ def demo(cfg):
 			logger_handle.info('[RANDOM]: Yield %d image...' % i)
 			z = np.random.normal(0, 1, 128).astype(np.float32)
 			z = torch.from_numpy(z).view(1, -1).type(FloatTensor)
-			img_gen = model.decoder(z)[0].cpu().data.permute(1, 2, 0).numpy() * 255
+			img_gen = model.decoder(z)[0][0].cpu().data.permute(1, 2, 0).numpy() * 255
 			img_gen = img_gen.astype('uint8')
 			img_gen = cv2.cvtColor(img_gen, cv2.COLOR_GRAY2RGB)
 			video.write(img_gen)
@@ -54,7 +55,7 @@ def demo(cfg):
 			img = cv2.resize(img, cfg.IMAGE_SIZE)
 			img = img.astype(np.float32) / 255
 			img = torch.from_numpy(img).unsqueeze(-1).permute(2, 0, 1).unsqueeze(0)
-			img_gen = model(img)[0].cpu().data.permute(1, 2, 0).numpy() * 255
+			img_gen = model(img.type(FloatTensor))[0][0].cpu().data.permute(1, 2, 0).numpy() * 255
 			img_gen = img_gen.astype('uint8')
 			img_gen = cv2.cvtColor(img_gen, cv2.COLOR_GRAY2RGB)
 			video.write(img_gen)

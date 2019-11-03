@@ -35,7 +35,7 @@ def train(cfg):
 	use_cuda = torch.cuda.is_available()
 	# prepare dataset
 	dataset = ImageFolder(cfg.ROOTDIR, cfg.IMAGE_SIZE)
-	dataloader = torch.utils.data.DataLoader(dataset, batch_size=cfg.BATCH_SIZE, shuffle=True, num_workers=cfg.NUM_WORKERS)
+	dataloader = torch.utils.data.DataLoader(dataset, batch_size=cfg.BATCH_SIZE, shuffle=False, num_workers=cfg.NUM_WORKERS)
 	# prepare model
 	model = DanceNet(image_size=cfg.IMAGE_SIZE)
 	if use_cuda:
@@ -43,7 +43,7 @@ def train(cfg):
 	model.initModules()
 	# optimizer
 	optimizer = torch.optim.Adam(model.parameters(), lr=cfg.LEARNING_RATE)
-	bce_loss_func = nn.BCELoss(size_average=False)
+	mse_loss_func = nn.MSELoss(size_average=False)
 	# start to train
 	FloatTensor = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
 	logger_handle.info('=' * 25 + 'TRAIN' + '=' * 25)
@@ -57,12 +57,12 @@ def train(cfg):
 			optimizer.zero_grad()
 			img = img.type(FloatTensor)
 			img_gen, mean, logvar = model(img)
-			bce_loss = bce_loss_func(img_gen, img) / cfg.BATCH_SIZE
+			mse_loss = mse_loss_func(img_gen, img)
 			kl_loss = torch.sum(mean.pow(2).add_(logvar.exp()).mul_(-1).add_(1).add_(logvar)).mul_(-0.5)
-			loss = bce_loss + kl_loss
+			loss = mse_loss + kl_loss
 			loss.backward()
 			optimizer.step()
-			logger_handle.info('EPOCH: %d, BATCHS: %d/%d, LOSS: bce_loss %.3f, kl_loss %.3f, loss_total %.3f...' % (epoch, batch_idx, len(dataloader), bce_loss.item(), kl_loss.item(), loss.item()))
+			logger_handle.info('EPOCH: %d, BATCHS: %d/%d, LOSS: mse_loss %.3f, kl_loss %.3f, loss_total %.3f...' % (epoch, batch_idx, len(dataloader), mse_loss.item(), kl_loss.item(), loss.item()))
 		if (epoch % cfg.SAVE_INTERVAL == 0) or (epoch == cfg.MAX_EPOCHS):
 			savepath = os.path.join(cfg.BACKUP_DIR, 'epoch_%s.pth' % epoch)
 			Logger.info('Saving checkpoints in %s...' % savepath)
