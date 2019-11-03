@@ -13,11 +13,11 @@ Graphics card: Titan xp
 cuda version: 10.0.130
 cudnn version: 7.0.4
 python version: 3.5+ with following dependencies:
-				--pytorch==0.4.1
-				--torchvision==0.2.2
-				--numpy
-				--argparse
-				--opencv-python
+	--pytorch==0.4.1
+	--torchvision==0.2.2
+	--numpy
+	--argparse
+	--opencv-python
 ```
 
 # Usage
