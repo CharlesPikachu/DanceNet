@@ -4,7 +4,7 @@ generate dancing videos using vae.
 ```
 
 # Introduction in Chinese
-preparing
+https://mp.weixin.qq.com/s/fFqztmu8hk5Jje9EUrP8DQ
 
 # Environment
 ```
@@ -33,7 +33,7 @@ Download the video for training following the introduction in the datasets dir.
 #### Step3
 ```
 Run train.py, command format is as follows:
-python train.py --videopath datasets/xxx.mp4
+python train.py --videopath datasets/videoname.mp4
 ```
 ## Demo
 #### Step1
@@ -43,9 +43,9 @@ Modify the cfgs/cfg_demo.py according to your needs.
 #### Step2
 ```
 For generating dancing video randomly, run as follows:
-python demo.py --mode random --checkpointspath xxx.pth --outputpath xxx.avi
+python demo.py --mode random --checkpointspath epoch_50.pth --outputpath output.avi
 For generating dancing video using trainset images, run as follows:
-python demo.py --mode fromtrain --checkpointspath xxx.pth --outputpath xxx.avi
+python demo.py --mode fromtrain --checkpointspath epoch_50.pth --outputpath output.avi
 ```
 
 # Some results
